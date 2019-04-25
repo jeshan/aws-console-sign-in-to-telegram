@@ -110,7 +110,6 @@ Resources:
               - iam:DeletePolicyVersion
               - iam:SetDefaultPolicyVersion
               - iam:GetPolicyVersion
-              - iam:DetachRolePolicy
             Effect: Allow
             Resource:
               - !Sub arn:aws:iam::${AWS::AccountId}:policy/${ProjectName}-*
@@ -121,6 +120,7 @@ Resources:
               - iam:PutRolePolicy
               - iam:AttachRolePolicy
               - iam:DetachRolePolicy
+              - iam:DeleteRolePolicy
             Effect: Allow
             Resource:
               - !Sub arn:aws:iam::${AWS::AccountId}:role/${ProjectName}-*
