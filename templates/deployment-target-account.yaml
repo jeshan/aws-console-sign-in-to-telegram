@@ -110,6 +110,10 @@ Resources:
               - iam:DeletePolicyVersion
               - iam:SetDefaultPolicyVersion
               - iam:GetPolicyVersion
+              - iam:DetachRolePolicy
+              - iam:CreateRole
+              - iam:DeleteRole
+              - iam:UpdateRole
             Effect: Allow
             Resource:
               - !Sub arn:aws:iam::${AWS::AccountId}:policy/${ProjectName}-*
