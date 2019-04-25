@@ -1,0 +1,47 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'get current monthly bill'
+
+Parameters:
+  IntervalHours:
+    Type: Number
+    AllowedValues: [6, 12, 24, 72, 168]
+    Default: 24
+    Description: from once every 6 hours to once a week
+  Role:
+    Type: String
+  TelegramBotToken:
+    Type: String
+    NoEcho: true
+  TelegramChatId:
+    Type: String
+
+Resources:
+  Fn:
+    Type: AWS::Serverless::Function
+    Properties:
+      InlineCode: !Sub |
+        from botocore.vendored import requests
+        import json
+
+        def handler(event, context):
+          print('event', event)
+
+          account = event.get('account')
+          detail = event['detail']
+          identity = detail['userIdentity']
+          issuer = identity['sessionContext']['sessionIssuer']
+          message = f'From {account}:\n{issuer["userName"]} has just signed in as {identity["type"]} ({identity["principalId"]}).\nIp: {detail["sourceIPAddress"]}, Time: {detail["eventTime"]}'
+
+          requests.post('https://api.telegram.org/bot${TelegramBotToken}/sendMessage', json={'chat_id': ${TelegramChatId}, 'text': message})
+      Handler: index.handler
+      Timeout: 30
+      MemorySize: 128
+      Role: !Ref Role
+      Runtime: python3.7
+      Events:
+        Cw:
+          Type: CloudWatchEvent
+          Properties:
+            Pattern:
+              detail-type: ['AWS Console Sign In via CloudTrail']
