@@ -35,7 +35,11 @@ Resources:
             username = identity['sessionContext']['sessionIssuer']['userName']
           else:
             username = identity['arn']
-          message = f'From {account}:\n{username} has just signed in as {identity["type"]} ({identity["principalId"]}).\nIp: {detail["sourceIPAddress"]}, Time: {detail["eventTime"]}'
+          if 'errorMessage' in detail:
+            attempt = detail['errorMessage']
+          else:
+            attempt = detail['responseElements']['ConsoleLogin']
+          message = f'From {account}:\nSign-in attempt by {username} as {identity["type"]} ({identity["principalId"]}). {attempt}\nIp: {detail["sourceIPAddress"]}, Time: {detail["eventTime"]}'
 
           requests.post('https://api.telegram.org/bot${TelegramBotToken}/sendMessage', json={'chat_id': ${TelegramChatId}, 'text': message})
       Handler: index.handler
