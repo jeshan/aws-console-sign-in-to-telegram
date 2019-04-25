@@ -3,13 +3,14 @@ Transform: AWS::Serverless-2016-10-31
 Description: 'lets you know of AWS console sign-ins in a Telegram chat'
 
 Parameters:
-  IntervalHours:
-    Type: Number
-    AllowedValues: [6, 12, 24, 72, 168]
-    Default: 24
-    Description: from once every 6 hours to once a week
-  Role:
+  DlqName:
     Type: String
+    Description: The SNS topic in this region which you use as dead-letter queue. (Optional)
+    Default: ''
+  StackEventsTopic:
+    Type: String
+    Description: The SNS topic in this region where you publish Cloudformation stack events. (Optional)
+    Default: ''
   TelegramBotToken:
     Type: String
     NoEcho: true
@@ -40,8 +41,18 @@ Resources:
       Handler: index.handler
       Timeout: 30
       MemorySize: 128
-      Role: !Ref Role
       Runtime: python3.7
+      Policies:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - sns:Publish
+            Resource: !Sub arn:aws:sns:*:${AWS::AccountId}:${StackEventsTopic}
+          - Effect: Allow
+            Action:
+              - sns:Publish
+            Resource: !Sub arn:aws:sns:${AWS::Region}:${AWS::AccountId}:${DlqName}
       Events:
         Cw:
           Type: CloudWatchEvent
