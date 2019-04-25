@@ -30,8 +30,11 @@ Resources:
           account = event.get('account')
           detail = event['detail']
           identity = detail['userIdentity']
-          issuer = identity['sessionContext']['sessionIssuer']
-          message = f'From {account}:\n{issuer["userName"]} has just signed in as {identity["type"]} ({identity["principalId"]}).\nIp: {detail["sourceIPAddress"]}, Time: {detail["eventTime"]}'
+          if 'sessionContext' in identity:
+            username = identity['sessionContext']['sessionIssuer']['userName']
+          else:
+            username = identity['arn']
+          message = f'From {account}:\n{username} has just signed in as {identity["type"]} ({identity["principalId"]}).\nIp: {detail["sourceIPAddress"]}, Time: {detail["eventTime"]}'
 
           requests.post('https://api.telegram.org/bot${TelegramBotToken}/sendMessage', json={'chat_id': ${TelegramChatId}, 'text': message})
       Handler: index.handler
