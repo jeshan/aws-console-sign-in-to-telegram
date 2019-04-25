@@ -111,12 +111,16 @@ Resources:
               - iam:SetDefaultPolicyVersion
               - iam:GetPolicyVersion
               - iam:DetachRolePolicy
+            Effect: Allow
+            Resource:
+              - !Sub arn:aws:iam::${AWS::AccountId}:policy/${ProjectName}-*
+          - Action:
               - iam:CreateRole
               - iam:DeleteRole
               - iam:UpdateRole
             Effect: Allow
             Resource:
-              - !Sub arn:aws:iam::${AWS::AccountId}:policy/${ProjectName}-*
+              - !Sub arn:aws:iam::${AWS::AccountId}:role/${ProjectName}-*
         Version: '2012-10-17'
     Type: AWS::IAM::ManagedPolicy
 
