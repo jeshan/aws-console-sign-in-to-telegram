@@ -2,7 +2,13 @@
 
 Lets you know when people logs in various AWS accounts to a (private) Telegram group.
 
-![Demo](screenshot.png)
+![Demo](https://raw.githubusercontent.com/jeshan/aws-console-sign-in-to-telegram/master/screenshot.png)
+
+
+## Deploying via the Serverless Repo
+Enter a Telegram bot token and a chat ID (group ID or your own user)
+
+## Deploying via sceptre
 
 If needed, you can create a virtual env with `pipenv install`
 

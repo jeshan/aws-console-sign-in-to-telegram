@@ -17,6 +17,19 @@ Parameters:
   TelegramChatId:
     Type: String
 
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: aws-console-sign-in-to-telegram
+    Description: Lets you know when people logs to a (private) Telegram group.
+    Author: jeshan
+    SpdxLicenseId: BSD-2-Clause
+    LicenseUrl: ../LICENCE.txt
+    ReadmeUrl: ../README.md
+    Labels: ['telegram']
+    HomePageUrl: https://github.com/jeshan/aws-console-sign-in-to-telegram
+    SemanticVersion: '0.1.0'
+    SourceCodeUrl: https://github.com/jeshan/aws-console-sign-in-to-telegram
+
 Resources:
   Fn:
     Type: AWS::Serverless::Function
