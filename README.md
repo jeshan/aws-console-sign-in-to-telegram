@@ -33,6 +33,15 @@ aws ssm put-parameter --name /console-sign-in-to-telegram/chat-id --type String 
 sceptre launch -y app
 ``` 
 
+## Infrastructure
+This is what the architecture diagrams look like:
+
+![](/diagram-app.png)
+
+![](/diagram-base.png)
+
+![](/diagram-deployment.png)
+
 ## Adding private sceptre configuration
 To generate sceptre configuration for a private environment, you can run something like:
 `python generate-config.py production`
